@@ -61,6 +61,12 @@ set_target_properties(PitchNet PROPERTIES OUTPUT_NAME "juce_jni")
 file(GLOB_RECURSE PITCHNET_SOURCES CONFIGURE_DEPENDS
     ${PITCHNET_ROOT}/Source/*.cpp)
 list(FILTER PITCHNET_SOURCES EXCLUDE REGEX "/Source/Plugin/")
+# JUCE hard-disables modal loops on Android (juce_PlatformDefs.h redefines
+# JUCE_MODAL_LOOPS_PERMITTED to 0), so DialogWindow::LaunchOptions::runModal()
+# does not exist there. FourierFilterDialog is the only user and is dead code
+# (its menu command is never registered, nothing else references it) — keep it
+# out of the Android build until it is converted to an async dialog.
+list(FILTER PITCHNET_SOURCES EXCLUDE REGEX "FourierFilterDialog")
 target_sources(PitchNet PRIVATE ${PITCHNET_SOURCES})
 
 # Embedded resources — same set as the desktop build (images + localization
