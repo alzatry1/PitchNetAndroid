@@ -36,6 +36,16 @@ jobs:
             "cmake;3.22.1" \
             "ndk;27.0.12077973" > /dev/null
 
+      - name: Install JUCE host build dependencies (X11 etc.)
+        # juceaide is recompiled for the HOST when cross-compiling for
+        # Android (JUCE reinvoke-cmake); host-side JUCE module compilation
+        # needs the documented Linux dependency headers.
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq \
+            libx11-dev libxext-dev libxinerama-dev libxrandr-dev \
+            libxcursor-dev libfreetype6-dev libfontconfig1-dev
+
       - name: Fetch ONNX Runtime Android artifacts
         run: sh android/fetch-ort-android.sh
 
