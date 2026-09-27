@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.alzatry1.pitchnet"
-        minSdk = 26
+        minSdk = 29  // JUCE 8's Android font matcher APIs (AFontMatcher) require API 29
         targetSdk = 35
         versionCode = 1
         versionName = "0.6.1-a0.1"
